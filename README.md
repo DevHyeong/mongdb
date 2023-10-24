@@ -28,3 +28,22 @@
 - mongdb는 저장할때 bjson(binary json)으로 저장한다. 표현은 json형태
 - 고유한 _id 필드를 항상 갖고 있다.
 - Document의 최대 크기는 16MB이다.
+
+## 배포 형태
+
+### Replica Set
+- HA(고가용성)을 위한 솔루션
+- 데이터 들고 있는 멤버의 상태는 Primary와 Secondary가 있다.
+- Oplog
+
+### Shared Cluster
+- 분산 처리를 위한 솔루션
+- 모든 Shard는 Replica Set으로 구성되어 있다.
+- sharding: 데이터를 분할하는 과정. shard: 분할된 모음, shard key: 분산의 기준, chunk: 데이터 분할 단위
+- write에 대한 부하가 클 경우 해당 솔루션을 사용한다. (Replica set보다 성능이 좋지 않다. 이유: 데이터가 분산되어 있어서 shard를 조회하고 머지하는 과정이 있기 때문)
+- 아키텍처의 구성: Config server(메타데이터 소유), mongos(router), Shard 3개의 컴포넌트로 구성
+- 컬렉션을 생성 후 각각의 shard에 데이터를 분산하지 않고 하나의 shard에서 관리할 때도 있다. (빈도수가 잦은 데이터)
+- 샤딩을 위한 전략
+  - ranged sharding
+  - Hashed sharding (가장 많이 사용)
+  - zone sharding
