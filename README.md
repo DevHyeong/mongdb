@@ -33,8 +33,9 @@
 
 ### Replica Set
 - HA(고가용성)을 위한 솔루션
+- 
 - 데이터 들고 있는 멤버의 상태는 Primary와 Secondary가 있다.
-- Oplog
+- Oplog에 저장, 이후에 
 
 ### Shared Cluster
 - 분산 처리를 위한 솔루션
@@ -47,3 +48,13 @@
   - ranged sharding
   - Hashed sharding (가장 많이 사용)
   - zone sharding
+
+## 일관성 제어
+- Single Document : 원자성 보장
+- Transaction: 여러 작업(multi document)에 대한 원자성을 보장, mongodb에서 권장하지 않음
+- Replica Set member: 동일한 데이터를 여러 멤버에게 저장, 멤버 간의 데이터 일관성에 대한 제어가 필요
+- Sharded Cluster Shard : shard간에 동일한 데이터가 갖지 않도록 제어가 필요
+
+
+
+
