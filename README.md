@@ -33,9 +33,11 @@
 
 ### Replica Set
 - HA(고가용성)을 위한 솔루션
-- 
 - 데이터 들고 있는 멤버의 상태는 Primary와 Secondary가 있다.
-- Oplog에 저장, 이후에 
+- primary만 write 수행 
+- primary의 write 작업 내역을 Oplog라는 컬렉션에 저장. 이후 secondary에서 자신보다 선행된 oplog를 갖는 멤버로부터 변경사항을 sink해 적용
+- primary로 요청했을 떄와 secondary로 요청했을 때 결과가 다를 수 있다.
+- primary가 write 도중 서버가 죽고 secondary가 변경사항에 대해 sink를 하지 못했으면 secondary가 primary로 변경되더라도 누락된 데이터가 발생할 수 있다. (일관성 문제 발생)
 
 ### Shared Cluster
 - 분산 처리를 위한 솔루션
@@ -53,7 +55,15 @@
 - Single Document : 원자성 보장
 - Transaction: 여러 작업(multi document)에 대한 원자성을 보장, mongodb에서 권장하지 않음
 - Replica Set member: 동일한 데이터를 여러 멤버에게 저장, 멤버 간의 데이터 일관성에 대한 제어가 필요
-- Sharded Cluster Shard : shard간에 동일한 데이터가 갖지 않도록 제어가 필요
+- Sharded Cluster Shard : shard간에 동일한 데이터가 갖지 않도록 제어가 필요. 즉 shard migration 간 chunk 이동 중 장애가 발생해 양쪽 shard에 동일한 document가 존재하는 경우 한쪽 shard에 있는 document만 읽어야 되는 문제가 발생 -> hdd 클러스터에서 알아서 제어
+
+### Replica set
+- primary가 write 도중 서버가 죽고 secondary가 변경사항에 대해 sink를 하지 못했으면 secondary가 primary로 변경되더라도 누락된 데이터가 발생할 수 있다. (일관성 문제 발생)
+
+
+## Read Prefernce
+- Read에 대한 요청을 어떤 멤버가 처리하는지 정하는 옵션
+- 
 
 
 
